@@ -61,6 +61,7 @@ function createShell(obj: any): any {
   let type: string;
   let shell: any = {};
 
+  // TODO: Use recursion and remove the need for the `for-in` loop.
   for (prop in obj) {
     if (obj.hasOwnProperty(prop)) {
       type = getType(obj[prop]);

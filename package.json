@@ -20,5 +20,8 @@
   "bugs": {
     "url": "https://github.com/folterung/kunit/issues"
   },
-  "homepage": "https://github.com/folterung/kunit#readme"
+  "homepage": "https://github.com/folterung/kunit#readme",
+  "dependencies": {
+    "reflect-metadata": "^0.1.10"
+  }
 }
