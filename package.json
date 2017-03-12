@@ -1,0 +1,24 @@
+{
+  "name": "kunit",
+  "version": "0.0.1",
+  "description": "Angular2 decorator driven testing framework",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/folterung/kunit.git"
+  },
+  "keywords": [
+    "Angular2",
+    "testing",
+    "framework"
+  ],
+  "author": "Kevin Warnock",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/folterung/kunit/issues"
+  },
+  "homepage": "https://github.com/folterung/kunit#readme"
+}
