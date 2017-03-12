@@ -9,7 +9,7 @@ import { kunitEnums } from './kunit.enums';
 kunitHelpers.resetMetadata();
 
 // @TestClass
-export function TestModule(configuration: TestModuleMetadata): Function {
+export function TestModule(configuration: TestModuleMetadata = {}): Function {
   return (constructor: any): void => {
     const constructorName = kunitHelpers.getConstructorName(constructor);
 
