@@ -8,7 +8,7 @@ import { kunitEnums } from './kunit.enums';
 
 kunitHelpers.resetMetadata();
 
-// @TestModule
+// @TestClass
 export function TestModule(configuration: TestModuleMetadata = {}): Function {
   return (constructor: any): void => {
     const constructorName = kunitHelpers.getConstructorName(constructor);
@@ -24,6 +24,15 @@ export function TestModule(configuration: TestModuleMetadata = {}): Function {
 // @Mock
 export function Mock(target: any, propertyKey: string): void {
   kunitHelpers.updateMetadata(kunitEnums.mock, {
+    target: target,
+    propertyKey: propertyKey,
+    type: Reflect.getMetadata('design:type', target, propertyKey)
+  });
+}
+
+// @Inject
+export function Inject(target: any, propertyKey: string) {
+  kunitHelpers.updateMetadata(kunitEnums.inject, {
     target: target,
     propertyKey: propertyKey,
     type: Reflect.getMetadata('design:type', target, propertyKey)

@@ -1,6 +1,7 @@
 declare function Mock(): void;
 declare function Fixture(): void;
 declare function Instance(): void;
+declare function Inject(): void;
 
 declare function Before(): void;
 declare function BeforeAsync(): void;

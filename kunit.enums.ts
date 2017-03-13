@@ -1,6 +1,7 @@
 interface KUnitEnums {
   mock: number;
   fixture: number;
+  inject: number;
   instance: number;
   beforeAll: number;
   beforeAllAsync: number;
@@ -18,15 +19,16 @@ interface KUnitEnums {
 export const kunitEnums: KUnitEnums = {
   mock: 0,
   fixture: 1,
-  instance: 2,
-  beforeAll: 3,
-  beforeAllAsync: 4,
-  beforeEach: 5,
-  beforeEachAsync: 6,
-  test: 7,
-  testAsync: 8,
-  afterEach: 9,
-  afterEachAsync: 10,
-  afterAll: 11,
-  afterAllAsync: 12
+  inject: 2,
+  instance: 3,
+  beforeAll: 4,
+  beforeAllAsync: 5,
+  beforeEach: 6,
+  beforeEachAsync: 7,
+  test: 8,
+  testAsync: 9,
+  afterEach: 10,
+  afterEachAsync: 11,
+  afterAll: 12,
+  afterAllAsync: 13
 };

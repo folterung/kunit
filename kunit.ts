@@ -44,6 +44,10 @@ export class KUnit {
           target[fixture.propertyKey] = testBed.createComponent(fixture.type);
         });
 
+        metadata[kunitEnums.inject].forEach((inject: MockMetadata) => {
+          target[inject.propertyKey] = testBed.get(inject.type);
+        });
+
         metadata[kunitEnums.instance].forEach((instance: MockMetadata) => {
           target[instance.propertyKey] = testBed.createComponent(instance.type).componentInstance;
         });

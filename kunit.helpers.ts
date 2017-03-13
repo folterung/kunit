@@ -50,6 +50,7 @@ export function generateMock(target: any): any {
   Object.setPrototypeOf(copy, Object.getPrototypeOf(targetInstance));
 
   // TODO: Extract logic to normalize prototype and object members.
+  // TODO: Optimize logic for normalizing the prototype and object members.
   Object.keys(Object.getPrototypeOf(copy))
     .forEach((newKey: string) => {
       copy[newKey] = _setDefaultValues(copy, newKey, getType(copy[newKey]));
