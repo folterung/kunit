@@ -92,8 +92,6 @@ export function generateMock(target: any): any {
   }
 }
 
-
-
 function getType(t: any): string {
   const typeString = Object.prototype.toString.call(t);
   const trueType = (/\[object\s(\w*)\]/.exec(typeString) as RegExpMatchArray)[1];
