@@ -2,7 +2,7 @@ import { KUnit } from './kunit';
 import { kunitEnums } from './kunit.enums';
 import { nativeConstants } from './native.constants';
 
-export const kunitMetadata = 'kunit:metdata';
+export const kunitMetadata = 'kunit:metadata';
 
 export function updateMetadata(key: number, value: Object) {
   const metadata = Reflect.getMetadata(kunitMetadata, KUnit);
@@ -22,24 +22,13 @@ export function getConstructorName(fn: Function): string {
   return (name !== null) ? name[1] : '';
 }
 
-// TODO: Reduce into a single object for simplicity.
 export function resetMetadata(): void {
-  const metadata = [];
+  const metadata: Array<any[]> = [];
 
-  // TODO: Find a simpler way of resetting the metadata.
-  metadata[kunitEnums.mock] = [];
-  metadata[kunitEnums.fixture] = [];
-  metadata[kunitEnums.instance] = [];
-  metadata[kunitEnums.beforeAll] = [];
-  metadata[kunitEnums.beforeAllAsync] = [];
-  metadata[kunitEnums.beforeEach] = [];
-  metadata[kunitEnums.beforeEachAsync] = [];
-  metadata[kunitEnums.test] = [];
-  metadata[kunitEnums.testAsync] = [];
-  metadata[kunitEnums.afterEach] = [];
-  metadata[kunitEnums.afterEachAsync] = [];
-  metadata[kunitEnums.afterAll] = [];
-  metadata[kunitEnums.afterAllAsync] = [];
+  Object.keys(kunitEnums)
+    .forEach((key: string) => {
+      metadata[kunitEnums[key]] = [];
+    });
 
   Reflect.defineMetadata(kunitMetadata, metadata, KUnit);
 }
@@ -57,38 +46,35 @@ export function generateMock(target: any): any {
 }
 
 function createShell(obj: any): any {
-  let prop: string;
   let type: string;
-  let shell: any = {};
+  let shell: any = Object.create(obj);
 
-  // TODO: Use recursion and remove the need for the `for-in` loop.
-  for (prop in obj) {
-    if (obj.hasOwnProperty(prop)) {
-      type = getType(obj[prop]);
+  Object.keys(obj)
+    .forEach((key: string) => {
+      type = getType(obj[key]);
 
       switch (type) {
         case nativeConstants.string:
-          shell[prop] = '';
+          shell[key] = '';
           break;
         case nativeConstants.number:
-          shell[prop] = 0;
+          shell[key] = 0;
           break;
         case nativeConstants.null:
-          shell[prop] = null;
+          shell[key] = null;
           break;
         case nativeConstants.undefined:
-          shell[prop] = undefined;
+          shell[key] = undefined;
           break;
         case nativeConstants.array:
-          shell[prop] = [];
+          shell[key] = [];
           break;
         case nativeConstants.object: {
-          shell[prop] = createShell(obj[prop]);
+          shell[key] = createShell(obj[key]);
           break;
         }
       }
-    }
-  }
+    });
 
   return shell;
 }

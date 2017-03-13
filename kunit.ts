@@ -68,7 +68,7 @@ export class KUnit {
       });
 
       metadata[kunitEnums.beforeEachAsync].forEach((beforeEachAsyncData: TestMetadata) => {
-        beforeEach((() => {
+        beforeEach(async(() => {
           target[beforeEachAsyncData.propertyKey]();
         }));
       });

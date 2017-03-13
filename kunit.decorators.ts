@@ -1,4 +1,5 @@
 // TODO: Simplify decorators so they can be re-purposed for both sync and async actions.
+
 import { TestModuleMetadata } from '@angular/core/testing';
 
 import { KUnit } from './kunit';
@@ -136,5 +137,3 @@ export function TestAsync(target: any, propertyKey: string, descriptor: TypedPro
     descriptor: descriptor
   });
 }
-
-
