@@ -2,7 +2,7 @@
 Decorator driven testing framework for Angular2 projects.
 
 ## Installation
-*This repository is a work in progress.*<br>
+**This repository is a work in progress.**<br>
 In order to use this testing framework you will need to clone it down locally and copy the files into your existing project.<br>
 
 TODO:
