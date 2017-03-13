@@ -6,3 +6,95 @@ TODO:
 - [ ] Add example usage tests in repo.
 - [ ] Compile down code into `js` for easier consumption.
 - [ ] Work with Angular team to ensure that it works properly in all scenarios.
+- [ ] Make package installable via npm.
+
+## Usage
+Example: Accessing the TestBed via the test class constructor.
+```JavaScript
+import { Component } from '@angular/core';
+import { TestBed } from '@angular/core/testing';
+
+// Import kunit decorators
+import { BeforeEach, Test, TestModule } from 'kunit';
+
+// Component to be tested
+@Component({
+  selector: 'example-component',
+  template: '<h2>{{title}}</h2>'
+})
+class ExampleComponent {
+  public title = 'Example Component';
+  
+  public setTitle(newTitle: string): string {
+    return this.title = newTitle;
+  }
+}
+
+@TestModule({
+  declarations: [ ExampleComponent ]
+})
+export class ExampleComponentTest {
+  exampleComponent: ExampleComponent;
+  
+  constructor(private testBed: TestBed) {}
+  
+  @BeforeEach
+  doBeforeEach() {
+    // We can reduce the need to directly access the `testBed` by using the `Instance` decorator (see below).
+    this.exampleComponent = this.testBed.createComponent(ExampleComponent).componentInstance;
+  }
+  
+  @Test
+  hasCorrectDefaultTitle() {
+    expect(this.exampleComponent.title).toBe('Example Component');
+  }
+  
+  @Test
+  setTitleShouldSetTitleMemberCorrectly() {
+    this.exampleComponent.setTitle('New Title For Example Component');
+    
+    expect(this.exampleComponent.title).toBe('New Title For Example Component');
+  }
+}
+```
+
+Example: Testing a component using the `Instance` decorator
+```JavaScript
+import { Component } from '@angular/core';
+
+// Import kunit decorators
+import { Instance, Test, TestModule } from 'kunit';
+
+// Component to be tested
+@Component({
+  selector: 'example-component',
+  template: '<h2>{{title}}</h2>'
+})
+class ExampleComponent {
+  public title = 'Example Component';
+  
+  public setTitle(newTitle: string): string {
+    return this.title = newTitle;
+  }
+}
+
+@TestModule({
+  declarations: [ ExampleComponent ]
+})
+export class ExampleComponentTest {
+  @Instance
+  exampleComponent: ExampleComponent;
+  
+  @Test
+  hasCorrectDefaultTitle() {
+    expect(this.exampleComponent.title).toBe('Example Component');
+  }
+  
+  @Test
+  setTitleShouldSetTitleMemberCorrectly() {
+    this.exampleComponent.setTitle('New Title For Example Component');
+    
+    expect(this.exampleComponent.title).toBe('New Title For Example Component');
+  }
+}
+```
