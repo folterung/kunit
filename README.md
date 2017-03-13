@@ -1,8 +1,16 @@
 # Testing
 Decorator driven testing framework for Angular2 projects.
 
+## Installation
+*This repository is a work in progress.*<br>
+In order to use this testing framework you will need to clone it down locally and copy the files into your existing project.<br>
+
 TODO:
 - [ ] Update README.md with usage instructions.
+  + [x] Accessing `TestBed` via the test class constructor.
+  + [x] Using the `@Instance` decorator to get a component instance.
+  + [ ] Using the `@Mock` decorator to automatically generate a mock object which mirrors the real object.
+  + [ ] Using the `@Fixture` decorator to get a component fixture (this is currently buggy).
 - [ ] Add example usage tests in repo.
 - [ ] Compile down code into `js` for easier consumption.
 - [ ] Work with Angular team to ensure that it works properly in all scenarios.
