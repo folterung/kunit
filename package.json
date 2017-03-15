@@ -7,16 +7,13 @@
   "dependencies": {},
   "description": "Decorator driven testing framework for Angular2 projects",
   "devDependencies": {},
-  "gitHead": "c3f53172330a6a829ec4ef8842f20de6a025553a",
   "license": "ISC",
   "main": "index.ts",
-  "name": "card-testing",
+  "name": "kunit",
   "optionalDependencies": {},
-  "readme": "# card-testing\nCard testing framework for Typescript projects\n",
-  "readmeFilename": "README.md",
   "repository": {
     "type": "git",
-    "url": "https://github.kdc.capitalone.com/CDS/card-testing.git"
+    "url": "https://github.com/folterung/kunit.git"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
