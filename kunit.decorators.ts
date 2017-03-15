@@ -9,7 +9,7 @@ import { kunitEnums } from './kunit.enums';
 kunitHelpers.resetMetadata();
 
 // @TestClass
-export function TestModule(configuration: TestModuleMetadata = {}): Function {
+export function TestModule(configuration?: TestModuleMetadata): Function {
   return (constructor: any): void => {
     const constructorName = kunitHelpers.getConstructorName(constructor);
 
@@ -48,27 +48,19 @@ export function Instance(target: any, propertyKey: string): void {
   });
 }
 
-// @Fixture
-export function Fixture(target: any, propertyKey: string): void {
-  kunitHelpers.updateMetadata(kunitEnums.fixture, {
-    target: target,
-    propertyKey: propertyKey,
-    type: Reflect.getMetadata('design:type', target, propertyKey)
-  });
-}
+// TODO: Fix `@Fixture` annotation.
+// @Fixture (currently broken)
+// export function Fixture(target: any, propertyKey: string): void {
+//   kunitHelpers.updateMetadata(kunitEnums.fixture, {
+//     target: target,
+//     propertyKey: propertyKey,
+//     type: Reflect.getMetadata('design:type', target, propertyKey)
+//   });
+// }
 
 // @Before
 export function Before(target: any, propertyKey: string, descriptor: TypedPropertyDescriptor<Function>): void {
   kunitHelpers.updateMetadata(kunitEnums.beforeAll, {
-    targetName: target,
-    propertyKey: propertyKey,
-    descriptor: descriptor
-  });
-}
-
-// @BeforeAsync
-export function BeforeAsync(target: any, propertyKey: string, descriptor: TypedPropertyDescriptor<Function>): void {
-  kunitHelpers.updateMetadata(kunitEnums.beforeAllAsync, {
     targetName: target,
     propertyKey: propertyKey,
     descriptor: descriptor
@@ -84,15 +76,6 @@ export function BeforeEach(target: any, propertyKey: string, descriptor: TypedPr
   });
 }
 
-// @BeforeEachAsync
-export function BeforeEachAsync(target: any, propertyKey: string, descriptor: TypedPropertyDescriptor<Function>): void {
-  kunitHelpers.updateMetadata(kunitEnums.beforeEachAsync, {
-    targetName: target,
-    propertyKey: propertyKey,
-    descriptor: descriptor
-  });
-}
-
 // @After
 export function After(target: any, propertyKey: string, descriptor: TypedPropertyDescriptor<Function>): void {
   kunitHelpers.updateMetadata(kunitEnums.afterAll, {
@@ -102,27 +85,9 @@ export function After(target: any, propertyKey: string, descriptor: TypedPropert
   });
 }
 
-// @AfterAsync
-export function AfterAsync(target: any, propertyKey: string, descriptor: TypedPropertyDescriptor<Function>): void {
-  kunitHelpers.updateMetadata(kunitEnums.afterAllAsync, {
-    targetName: target,
-    propertyKey: propertyKey,
-    descriptor: descriptor
-  });
-}
-
 // @AfterEach
 export function AfterEach(target: any, propertyKey: string, descriptor: TypedPropertyDescriptor<Function>): void {
   kunitHelpers.updateMetadata(kunitEnums.afterEach, {
-    targetName: target,
-    propertyKey: propertyKey,
-    descriptor: descriptor
-  });
-}
-
-// @AfterEachAsync
-export function AfterEachAsync(target: any, propertyKey: string, descriptor: TypedPropertyDescriptor<Function>): void {
-  kunitHelpers.updateMetadata(kunitEnums.afterEachAsync, {
     targetName: target,
     propertyKey: propertyKey,
     descriptor: descriptor

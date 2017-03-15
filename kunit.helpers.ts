@@ -1,3 +1,5 @@
+import { TestModuleMetadata } from '@angular/core/testing';
+
 import { KUnit } from './kunit';
 import { kunitEnums } from './kunit.enums';
 import { nativeConstants } from './native.constants';
@@ -101,4 +103,26 @@ function getType(t: any): string {
 
 function noop() {
   /* noop function */
+}
+
+export function needsAsync(configuration: TestModuleMetadata): boolean {
+  let i;
+  let async = false;
+  let metadata;
+
+  // Make synchronous for now
+  // TODO: Make this operation more performant.
+  if (configuration.declarations) {
+    for (i = 0; i < configuration.declarations.length; i++) {
+      metadata = Reflect.getMetadata('annotations', configuration.declarations[i]);
+
+      // TODO: Ensure that `metadata[0]` contains all of the information that we need.
+      if (metadata[0].templateUrl) {
+        async = true;
+        break;
+      }
+    }
+  }
+
+  return async;
 }

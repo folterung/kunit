@@ -1,4 +1,5 @@
-import { async, TestBed, TestModuleMetadata } from '@angular/core/testing';
+import { async, fakeAsync, TestBed, TestModuleMetadata } from '@angular/core/testing';
+
 import { generateMock, resetMetadata, getMetadata } from './kunit.helpers';
 import { kunitEnums } from './kunit.enums';
 
@@ -17,7 +18,7 @@ interface MockMetadata {
 
 export class KUnit {
   constructor(
-    configuration: TestModuleMetadata,
+    configuration: TestModuleMetadata | undefined,
     targetName: string,
     targetConstructor: any
   ) {
@@ -29,28 +30,8 @@ export class KUnit {
     describe(targetName, () => {
       let target: any;
 
-      // TODO: Figure out a way to make @Instance and @Fixture async compatible.
-      // TODO: Figure out a way to create the TestBed instance without needing a beforeEach block.
-      beforeEach(() => {
-        let testBed = TestBed.configureTestingModule(configuration);
-
-        target = new targetConstructor(testBed);
-
-        metadata[kunitEnums.mock].forEach((mock: MockMetadata) => {
-          target[mock.propertyKey] = generateMock(mock);
-        });
-
-        metadata[kunitEnums.fixture].forEach((fixture: MockMetadata) => {
-          target[fixture.propertyKey] = testBed.createComponent(fixture.type);
-        });
-
-        metadata[kunitEnums.inject].forEach((inject: MockMetadata) => {
-          target[inject.propertyKey] = testBed.get(inject.type);
-        });
-
-        metadata[kunitEnums.instance].forEach((instance: MockMetadata) => {
-          target[instance.propertyKey] = testBed.createComponent(instance.type).componentInstance;
-        });
+      beforeAll(() => {
+        target = new targetConstructor(TestBed);
       });
 
       metadata[kunitEnums.beforeAll].forEach((beforeAllData: TestMetadata) => {
@@ -59,22 +40,40 @@ export class KUnit {
         });
       });
 
-      metadata[kunitEnums.beforeAllAsync].forEach((beforeAllAsyncData: TestMetadata) => {
-        beforeAll(async(() => {
-          target[beforeAllAsyncData.propertyKey]();
+      if (configuration) {
+        beforeEach(async(() => {
+          // Configure the testing module
+          // Always using `async` because it doesn't appear to have any negative side effects during regular tests.
+            TestBed
+              .configureTestingModule(configuration)
+              .compileComponents();
         }));
+      }
+
+      beforeEach(() => {
+        metadata[kunitEnums.mock].forEach((mock: MockMetadata) => {
+          target[mock.propertyKey] = generateMock(mock);
+        });
+
+        // Fixtures are broken ATM.
+        // metadata[kunitEnums.fixture].forEach((fixture: MockMetadata) => {
+        //   console.log(`fixture type: ${fixture.type}`);
+        //   target[fixture.propertyKey] = TestBed.createComponent(fixture.type);
+        // });
+
+        metadata[kunitEnums.inject].forEach((inject: MockMetadata) => {
+          target[inject.propertyKey] = TestBed.get(inject.type);
+        });
+
+        metadata[kunitEnums.instance].forEach((instance: MockMetadata) => {
+          target[instance.propertyKey] = TestBed.createComponent(instance.type).componentInstance;
+        });
       });
 
       metadata[kunitEnums.beforeEach].forEach((beforeEachData: TestMetadata) => {
         beforeEach(() => {
           target[beforeEachData.propertyKey]();
         });
-      });
-
-      metadata[kunitEnums.beforeEachAsync].forEach((beforeEachAsyncData: TestMetadata) => {
-        beforeEach(async(() => {
-          target[beforeEachAsyncData.propertyKey]();
-        }));
       });
 
       metadata[kunitEnums.test].forEach((testData: TestMetadata) => {
@@ -84,7 +83,7 @@ export class KUnit {
       });
 
       metadata[kunitEnums.testAsync].forEach((testAsyncData: TestMetadata) => {
-        it(testAsyncData.propertyKey, async(() => {
+        it(testAsyncData.propertyKey, fakeAsync(() => {
           target[testAsyncData.propertyKey]();
         }));
       });
@@ -95,22 +94,10 @@ export class KUnit {
         });
       });
 
-      metadata[kunitEnums.afterEachAsync].forEach((afterEachAsyncData: TestMetadata) => {
-        afterEach(async(() => {
-          target[afterEachAsyncData.propertyKey]();
-        }));
-      });
-
       metadata[kunitEnums.afterAll].forEach((afterAllData: TestMetadata) => {
         afterAll(() => {
           target[afterAllData.propertyKey]();
         });
-      });
-
-      metadata[kunitEnums.afterAllAsync].forEach((afterAllAsyncData: TestMetadata) => {
-        afterAll(async(() => {
-          target[afterAllAsyncData.propertyKey]();
-        }));
       });
     });
   }
