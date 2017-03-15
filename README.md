@@ -10,6 +10,7 @@ TODO:
 - [ ] Update README.md with usage instructions.
   + [x] Accessing `TestBed` via the test class constructor.
   + [x] Using the `@Instance` decorator to get a component instance.
+  + [x] Using the `@Inject` decorator to get a provider instance (service, pipe, etc...).
   + [ ] Using the `@Mock` decorator to automatically generate a mock object which mirrors the real object.
   + [ ] Using the `@Fixture` decorator to get a component fixture (this is currently buggy).
 - [ ] Make package installable via npm.
@@ -68,7 +69,7 @@ export class ExampleComponentTest {
 }
 ```
 
-Example: Testing a component using the `Instance` decorator
+Example: Testing a component using the `@Instance` decorator
 ```JavaScript
 import { Component } from '@angular/core';
 
@@ -105,6 +106,30 @@ export class ExampleComponentTest {
     this.exampleComponent.setTitle('New Title For Example Component');
     
     expect(this.exampleComponent.title).toBe('New Title For Example Component');
+  }
+}
+```
+
+Example: Testing a service using the `@Inject` decorator.
+```JavaScript
+import { HttpModule } from '@angular/http';
+import { Inject, Test, TestModule } from 'kunit';
+
+@TestModule({
+  imports: [
+    HttpModule
+  ],
+  providers: [
+    ToggleRepositoryService
+  ]
+})
+export class ToggleRepositoryServiceTest {
+  @Inject
+  toggleRepositoryService: ToggleRepositoryService;
+
+  @Test
+  shouldHaveGetToggles() {
+    expect(this.toggleRepositoryService.getToggles).toBeDefined();
   }
 }
 ```
