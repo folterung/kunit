@@ -55,11 +55,9 @@ export class KUnit {
           target[mock.propertyKey] = generateMock(mock);
         });
 
-        // Fixtures are broken ATM.
-        // metadata[kunitEnums.fixture].forEach((fixture: MockMetadata) => {
-        //   console.log(`fixture type: ${fixture.type}`);
-        //   target[fixture.propertyKey] = TestBed.createComponent(fixture.type);
-        // });
+        metadata[kunitEnums.fixture].forEach((fixture: MockMetadata) => {
+          target[fixture.propertyKey] = TestBed.createComponent(fixture.type);
+        });
 
         metadata[kunitEnums.inject].forEach((inject: MockMetadata) => {
           target[inject.propertyKey] = TestBed.get(inject.type);
